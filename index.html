@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baralho Interativo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 50px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .actions {
+            text-align: center;
+            width: 30%;
+        }
+        .cartas-container {
+            width: 50%;
+            text-align: left;
+            padding-left: 10px;
+            max-height: 400px;
+            overflow-y: scroll;
+            border-left: 1px solid #000;
+        }
+        .card {
+            font-size: 18px; /* Diminuir tamanho da fonte */
+            padding: 8px;
+            margin: 4px;
+            background-color: lightyellow;
+            border: 1px solid black;
+            width: 120px; /* Diminuir largura das cartas */
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        #cartaExibida {
+            font-size: 24px;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: lightyellow;
+            border: 1px solid black;
+            width: 180px;
+            display: inline-block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Baralho Interativo</h1>
+
+    <div class="container">
+        <div class="actions">
+            <button onclick="puxarCartaAleatoria()">Puxar Carta</button>
+            <button onclick="adicionarCartaDeVolta(cartaEscolhida)">Adicionar Carta de Volta</button>
+
+            <div id="cartaExibida" class="card">
+                Nenhuma carta puxada ainda.
+            </div>
+        </div>
+
+    <div class="cartas-container" id="baralhoExibido">
+        <h3>Cartas no Baralho</h3>
+        Cartas serão exibidas aqui 
+    </div>
+    
+    </div>
+
+    <script>
+        // Definindo o baralho com 52 cartas e 2 coringas
+        let cartas = [
+            { valor: '2', naipe: 'de ouros' },
+            { valor: '3', naipe: 'de ouros' },
+            { valor: '4', naipe: 'de ouros' },
+            { valor: '5', naipe: 'de ouros' },
+            { valor: '6', naipe: 'de ouros' },
+            { valor: '7', naipe: 'de ouros' },
+            { valor: '8', naipe: 'de ouros' },
+            { valor: '9', naipe: 'de ouros' },
+            { valor: '10', naipe: 'de ouros' },
+            { valor: 'J', naipe: 'de ouros' },
+            { valor: 'Q', naipe: 'de ouros' },
+            { valor: 'K', naipe: 'de ouros' },
+            { valor: 'A', naipe: 'de ouros' },
+            { valor: '2', naipe: 'de copas' },
+            { valor: '3', naipe: 'de copas' },
+            { valor: '4', naipe: 'de copas' },
+            { valor: '5', naipe: 'de copas' },
+            { valor: '6', naipe: 'de copas' },
+            { valor: '7', naipe: 'de copas' },
+            { valor: '8', naipe: 'de copas' },
+            { valor: '9', naipe: 'de copas' },
+            { valor: '10', naipe: 'de copas' },
+            { valor: 'J', naipe: 'de copas' },
+            { valor: 'Q', naipe: 'de copas' },
+            { valor: 'K', naipe: 'de copas' },
+            { valor: 'A', naipe: 'de copas' },
+            { valor: '2', naipe: 'de espadas' },
+            { valor: '3', naipe: 'de espadas' },
+            { valor: '4', naipe: 'de espadas' },
+            { valor: '5', naipe: 'de espadas' },
+            { valor: '6', naipe: 'de espadas' },
+            { valor: '7', naipe: 'de espadas' },
+            { valor: '8', naipe: 'de espadas' },
+            { valor: '9', naipe: 'de espadas' },
+            { valor: '10', naipe: 'deespadas' },
+            { valor: 'J', naipe: 'de espadas' },
+            { valor: 'Q', naipe: 'de espadas' },
+            { valor: 'K', naipe: 'de espadas' },
+            { valor: 'A', naipe: 'de espadas' },
+            { valor: '2', naipe: 'de paus' },
+            { valor: '3', naipe: 'de paus' },
+            { valor: '4', naipe: 'de paus' },
+            { valor: '5', naipe: 'de paus' },
+            { valor: '6', naipe: 'de paus' },
+            { valor: '7', naipe: 'de paus' },
+            { valor: '8', naipe: 'de paus' },
+            { valor: '9', naipe: 'de paus' },
+            { valor: '10', naipe: 'de paus' },
+            { valor: 'J', naipe: 'de paus' },
+            { valor: 'Q', naipe: 'de paus' },
+            { valor: 'K', naipe: 'de paus' },
+            { valor: 'A', naipe: 'de paus' },
+            { valor: 'Coringa_1', naipe: '' },
+            { valor: 'Coringa_2', naipe: '' }
+        ];
+
+        let cartaEscolhida = null;
+
+        // Função para puxar uma carta aleatória
+        function puxarCartaAleatoria() {
+            // Gerar um índice aleatório
+            const indiceAleatorio = Math.floor(Math.random() * cartas.length);
+
+            // Puxar a carta correspondente ao índice
+            cartaEscolhida = cartas.splice(indiceAleatorio, 1)[0]; // Retira a carta do baralho
+
+            // Exibir a carta na tela
+            document.getElementById("cartaExibida").textContent = `${cartaEscolhida.valor} ${cartaEscolhida.naipe}`;
+
+            // Atualizar a lista de cartas no baralho
+            atualizarBaralhoExibido();
+        }
+
+        // Função para adicionar uma carta de volta ao baralho
+        function adicionarCartaDeVolta(carta) {
+            if (carta !== null) {
+                cartas.push(carta);
+                cartaEscolhida = null;  // Resetando a carta escolhida
+                document.getElementById("cartaExibida").textContent = "Nenhuma carta puxada ainda.";
+                alert(`Carta ${carta.valor} de ${carta.naipe} adicionada de volta ao baralho.`);
+
+                // Atualizar a lista de cartas no baralho
+                atualizarBaralhoExibido();
+            } else {
+                alert("Nenhuma carta foi puxada.");
+            }
+        }
+
+        // Função para embaralhar o baralho
+        function embaralharBaralho() {
+            // Algoritmo de embaralhamento de Fisher-Yates (Knuth)
+            for (let i = cartas.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cartas[i], cartas[j]] = [cartas[j], cartas[i]]; // Troca as cartas
+            }
+
+            alert("Baralho embaralhado.");
+
+            // Atualizar a lista de cartas no baralho
+            atualizarBaralhoExibido();
+        }
+
+        // Função para atualizar a exibição das cartas no baralho
+        function atualizarBaralhoExibido() {
+            const baralhoExibido = document.getElementById("baralhoExibido");
+            baralhoExibido.innerHTML = "<h3>Cartas no Baralho</h3>"; // Resetando a área de cartas
+
+            cartas.forEach(carta => {
+                const div = document.createElement("div");
+                div.classList.add("card");
+                div.textContent = `${carta.valor} ${carta.naipe}`;
+                baralhoExibido.appendChild(div);
+            });
+        }
+
+        // Inicializa a exibição do baralho
+        atualizarBaralhoExibido();
+    </script>
+</body>
+</html>
